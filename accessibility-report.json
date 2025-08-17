@@ -1,0 +1,14 @@
+{
+  "timestamp": "2025-08-17T03:11:44.608Z",
+  "fixedAutomatically": 0,
+  "remainingIssues": [],
+  "recommendations": [
+    "Ajouter des attributs alt descriptifs à toutes les images",
+    "Utiliser des balises sémantiques HTML5 (nav, main, article, section)",
+    "Assurer un contraste de couleur suffisant (WCAG AA minimum 4.5:1)",
+    "Fournir des labels pour tous les champs de formulaire",
+    "Implémenter la navigation au clavier pour tous les éléments interactifs",
+    "Ajouter des aria-labels pour les boutons d'icône",
+    "Utiliser les attributs ARIA appropriés pour les composants complexes"
+  ]
+}

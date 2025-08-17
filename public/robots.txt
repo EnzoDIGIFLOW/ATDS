@@ -1,0 +1,23 @@
+# Robots.txt pour Au Temple du Sushi
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://autempledusushi.fr/sitemap.xml
+
+# Optimisations SEO
+Crawl-delay: 1
+
+# Pages à éviter (si nécessaire)
+Disallow: /admin/
+Disallow: /api/
+Disallow: /_next/
+Disallow: /backup/
+
+# Pour Google
+User-agent: Googlebot
+Allow: /
+
+# Pour Bing
+User-agent: Bingbot
+Allow: /

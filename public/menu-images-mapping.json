@@ -1,0 +1,203 @@
+{
+  "boissons": {
+    "eau-plate": null,
+    "san-pellegrino": null,
+    "oasis": null,
+    "coca-cola": null,
+    "coca-cola-zero": null,
+    "goyave-litchi": "soon",
+    "the-jomo-gingembre": "soon",
+    "the-jomo-mangue": "soon",
+    "the-jomo-passion-citron": "boisson/Thé JOMO menthe citron_.webp",
+    "the-jomo-peche": "boisson/Thé JOMO grenade litchie.webp",
+    "desperados-blonde": null,
+    "kirin": null,
+    "asahi": null,
+    "pietra": null
+  },
+  "formules-du-midi": {
+    "formule-a": "formule du midi /Formule A jpg.webp",
+    "formule-b": "soon",
+    "formule-c": "soon"
+  },
+  "plateaux": {
+    "plateau-makis": "plateaux /box makis 18pcs .webp",
+    "super-box": "plateaux /super box .webp",
+    "plateau-california": "plateaux /box california 18pcs  .webp",
+    "box-sushi-saumon": "plateaux /box sushi saumon 10pcs.webp",
+    "chicken-box": "soon",
+    "box-sushi-mix": "plateaux /Box sushi mix 12pcs .webp",
+    "love-box": "plateaux /love box - Grande.webp",
+    "calibox": "soon",
+    "plateaux-chaud": "plateaux /plateau chaud  26 pièces .webp",
+    "box-sushi-duo": "soon",
+    "family-box": "soon",
+    "plateau-premium": "plateaux /plateau 60 pcs.webp"
+  },
+  "plats-chauds": {
+    "soupe-miso-tofu": "soupe miso/soupe .webp",
+    "soupe-miso-tofu-wakame": "soupe miso/soupe .webp",
+    "soupe-miso-tofu-algue": "soupe miso/soupe .webp",
+    "nem-legumes": "plat chaud /nem .webp",
+    "nem-poulet": "plat chaud /nem .webp",
+    "poulet-karaage": "soon",
+    "nem-crevettes": "plat chaud /nem .webp",
+    "gyoza-poulet-curry": "plat chaud /gyoza poulet curry.webp",
+    "samoussa-boeuf": "plat chaud /samoussa .webp",
+    "samoussa-poulet": "plat chaud /samoussa .webp",
+    "gyoza-porc": "plat chaud /Gyoza porc .webp",
+    "crevettes-tempura": "plat chaud /crevette tempura .webp",
+    "gyoza-crevette": "plat chaud /gyoza crevette .webp",
+    "poulet-frit": "soon",
+    "yakitori-poulet-caramelise": "soon",
+    "poulet-teriyaki": "soon",
+    "nouilles-legumes": "soon",
+    "nouilles-poulet-caramelise-et-legumes": "soon",
+    "nouilles-poulet-teriyaki-et-legumes": "nouilles/nouille teryaki.webp",
+    "nouilles-crevettes-et-legumes": "nouilles/nouilles crevettes_.webp"
+  },
+  "makis-par-6": {
+    "makis-cheese": "maki/makis cheese .webp",
+    "makis-concombre-cheese": "maki/makis concombre cheese .webp",
+    "makis-avocat": "soon",
+    "makis-avocat-mayo": "maki/makis avocat amyo .webp",
+    "makis-poulet-cheese": "maki/makis poulet cheese .webp",
+    "makis-poulet-curry": "maki/makis poulet curry .webp",
+    "makis-poulet-mayonnaise": "maki/makis poulet mayo .webp",
+    "makis-saumon": "maki/makis saumon .webp",
+    "makis-saumon-cheese": "maki/makis saumon cheese .webp",
+    "makis-thon": "soon",
+    "makis-thon-mayonnaise": "soon",
+    "makis-thon-cheese": "maki/makis thon cheese .webp",
+    "makis-gambas": "soon",
+    "makis-thon-avocat": "soon"
+  },
+  "california-par-6": {
+    "california-poulet-cheese": "california/cali poulet cheese .webp",
+    "california-saumon-cheese": "california/cali saumon cheese .webp",
+    "california-poulet-avocat": "soon",
+    "california-poulet-curry": "california/cali poulet curry .webp",
+    "california-saumon-avocat": "california/cali saumon avocat .webp",
+    "california-saumon-avocat-tobiko": "california/cali saumon avocat tobiko.webp",
+    "california-crevette-tempura-mayo": "california/cali tempura avocat mayo .webp",
+    "california-crevette-tempura-avocat": "california/cali tempura avocat mayo .webp",
+    "california-poulet-frit-cheddar": "soon",
+    "california-saumon-mangue-menthe": "california/cali saumon mangue menthe.webp",
+    "california-thon-avocat": "soon",
+    "california-gambas-cheese": "california/cali gambas cheese .webp",
+    "california-gambas-cheese-oignon": "california/cali gambas cheese oignon frit .webp",
+    "california-gambas-cheese-avocat": "soon"
+  },
+  "sashimi-par-6": {
+    "sashimi-saumon": "sashimi/sashimi saumon .webp",
+    "sashimi-thon": "sashimi/sashimi thon.webp",
+    "sashimi-duo": "sashimi/sashimi duo .webp"
+  },
+  "sushi-a-lunite": {
+    "sushi-saumon": "sushi nigiri/sushi saumon.webp",
+    "sushi-saumon-avocat": "soon",
+    "sushi-saumon-ciboulette": "sushi nigiri/sushi saumon ciboulette .webp",
+    "sushi-saumon-cheese": "sushi nigiri/sushi saumon cheese .webp",
+    "sushi-saumon-tobiko": "sushi nigiri/sushis aumon tobiko.webp",
+    "sushi-saumon-braise": "sushi nigiri/sushi saumon braisé.webp",
+    "sushi-saumon-avocat-jalapeno": "sushi nigiri/sushis saumon avocat jalapeno.webp",
+    "sushi-thon": "sushi nigiri/sushi thon.webp",
+    "sushi-thon-braise": "sushi nigiri/sushi thon braisé .webp",
+    "sushi-saumon-mangue": "sushi nigiri/sushi saumon mangue .webp",
+    "sushi-saumon-braise-spicy": "soon",
+    "sushi-saumon-braise-truffe": "sushi nigiri/sushi saumon braisé truffe.webp"
+  },
+  "creation-du-chef-par-6": {
+    "flocon-saumon-avocat-menthe": "création du chef/flocon saumon avocat tobiko menthe .webp",
+    "avocat-mayo-thon": "création du chef/roll_s avocat pousse de cress.webp",
+    "rolls-saumon-braise": "création du chef/roll_s braisé truffe  - Grande - Grande.webp",
+    "california-crevette-tempura-enrobe": "création du chef/cali tempura avocat enrobe saumon braisé .webp",
+    "california-poulet-frit-guacamole": "création du chef/cali poulet frit guacamole jalap.webp",
+    "california-poulet-caramelise-mangue": "création du chef/california poulet caramelisé mangue .webp",
+    "rolls-avocat-thon": "création du chef/rolls avocat enrobé de thon, zeste de kiwi, tobiko.webp",
+    "california-saumon-guacamole": "création du chef/saumon guacamole jalap.webp",
+    "l-italien": "création du chef/L_italien 4.webp",
+    "california-saumon-braise-truffe": "création du chef/roll_s braisé truffe  - Grande - Grande .webp",
+    "rolls-avocat-truffe": "création du chef/flocon saumon braisé enrobe de truffe .webp"
+  },
+  "crispys-frit-par-6": {
+    "saumon-cheese-crispy": "crispy/crisoy saumon cheese .webp",
+    "cheese-saumon-tartare": "crispy/crispy cheese et saumon façon tartare ciboulette.webp",
+    "poulet-frit-cheddar-crispy": "crispy/crisoy poulet frit cheddar oignon frit_.webp",
+    "saumon-cuit-cheese-fraise": "crispy/crispy saumon cheese fraise_.webp",
+    "saumon-avocat-cheese-crispy": "crispy/crispy saumon avocat cheese oignon frit.webp",
+    "crevette-tempura-saumon-crispy": "soon",
+    "crevette-tempura-cheese-crispy": "soon"
+  },
+  "calispring-par-6": {
+    "calispring-saumon": "spring /spring saumon 2.webp",
+    "calispring-poulet-frit-avocat": "spring /spring poulet frit avoca cheese .webp",
+    "calispring-thon-cuit-cheese": "spring /spring thon cheese .webp",
+    "calispring-thon-cuit-mayo": "spring /spring thon mayo .webp",
+    "calispring-saumon-cheese-tobiko": "spring /spring saumo cheese tobiko.webp",
+    "calispring-thon-mangue": "spring /spring thon mangue .webp",
+    "calispring-poulet-frit-avocat-cheese": "spring /spring poulet frit avoca cheese .webp",
+    "calispring-gambas-avocat": "spring /spring gambas avocat .webp",
+    "calispring-gambas-cheese": "spring /spring gambas cheese.webp"
+  },
+  "rolls-par-6": {
+    "rolls-cheese": "soon",
+    "rolls-avocat-cheese": "roll_s/rolls avocat cheese .webp",
+    "rolls-saumon": "roll_s/tolls saumon .webp",
+    "rolls-saumon-cheese": "roll_s/rollsa saumon cheese .webp",
+    "rolls-concombre-avocat": "soon",
+    "rolls-avocat-enrobe": "soon"
+  },
+  "flocon-par-6": {
+    "flocon-saumon": "soon",
+    "flocon-thon": "flocon/flocon thon .webp",
+    "flocon-saumon-avocat": "création du chef/flocon saumon avocat tobiko menthe .webp",
+    "flocon-saumon-cheese": "soon",
+    "flocon-thon-avocat": "soon",
+    "flocon-gambas-mayo": "soon"
+  },
+  "buritos": {
+    "buritos-poulet-caramelise": "burito/buritos poulet caramelisé .webp",
+    "buritos-poulet-frit-avocat-mayo": "burito/buritos poulet frit avocat chesse.webp",
+    "buritos-saumon-avocat-cheese": "burito/buritos saumon avocat cheese .webp"
+  },
+  "chirashi-10-tranches": {
+    "chirashi-saumon": "chirachi/chirashi saumon 2 - Grande.webp",
+    "chirashi-saumon-avocat": "chirachi/chirashi saumon avocat.webp",
+    "chirashi-saumon-thon": "chirachi/chirashi thon 2.webp",
+    "chirashi-saumon-avocat-cheese-oignon": "chirachi/chirashi saumo thon avocat cheese oignon frit .webp",
+    "chirashi-saumon-thon-avocat": "chirachi/chirashi saumo thon avocat cheese oignon frit .webp",
+    "chirashi-gambas-saumon-thon": "soon"
+  },
+  "poke-bowl": {
+    "poke-bowl-01": "poke bowl /POKE 1.webp",
+    "poke-bowl-02": "poke bowl /POKE 2.webp",
+    "poke-bowl-03": "poke bowl /POKE 3.webp",
+    "poke-bowl-04": "poke bowl /POKE 4.webp",
+    "poke-bowl-05": "poke bowl /POKE 5.webp",
+    "poke-bowl-06": "poke bowl /poke 6.webp",
+    "poke-bowl-07": "poke bowl /POKE 7.webp",
+    "poke-bowl-08": "poke bowl /POKE 8.webp",
+    "poke-bowl-09": "soon",
+    "poke-bowl-10": "poke bowl /POKE 10.webp",
+    "poke-bowl-11": "poke bowl /POKE 11.webp",
+    "poke-bowl-12": "poke bowl /POKE 12.webp"
+  },
+  "accompagnements": {
+    "riz-vinaigre": "accompagnement/riz vinaigre .webp",
+    "salade-de-chou": "accompagnement/salade de chou .webp",
+    "salade-edamame": "accompagnement/edamame.webp",
+    "salade-algue-wakame": "accompagnement/wakame .webp",
+    "salade-de-chou-saumon": "accompagnement/chou saumon.webp",
+    "salade-de-chou-thon": "accompagnement/chou thon 2.webp",
+    "tartare-saumon": "tartare/tartare saumon avoca.webp",
+    "tartare-thon-saumon": "tartare/taratre thon saumon avocat tobiko 2.webp"
+  },
+  "desserts": {
+    "mochi-du-jour": "dessert/mochis .webp",
+    "gyoza-pomme": "soon",
+    "dessert-du-jour": "dessert/délice au daim.webp",
+    "makis-nutella-banane": "soon",
+    "makis-mangue-nutella-coco": "dessert/Makis mangue nutella coco rapé -2.webp"
+  }
+}
