@@ -19,12 +19,16 @@ interface SushiCarouselProps {
   dishes?: SushiDish[];
   autoplay?: boolean;
   cardsPerView?: number;
+  onAddToCart?: (item: any) => void;
+  showAddedToCart?: string | null;
 }
 
 const SushiCarousel = ({ 
   dishes = [], 
   autoplay = true, 
-  cardsPerView = 6 
+  cardsPerView = 6,
+  onAddToCart,
+  showAddedToCart
 }: SushiCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -354,10 +358,31 @@ const SushiCarousel = ({
                         className="bg-white text-temple-pink px-3 py-2 rounded-full text-xs font-semibold hover:bg-white transition-colors"
                         whileHover={{ scale: 1.05 }}
                         whileTap={{ scale: 0.95 }}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          if (onAddToCart && dish) {
+                            // Utiliser le prix original qui est déjà un nombre
+                            const item = {
+                              id: dish.id,
+                              name: dish.name,
+                              description: dish.description || '',
+                              price: dish.originalPrice || dish.price || 0
+                            };
+                            onAddToCart(item);
+                          }
+                        }}
                       >
                         Commander
                       </motion.button>
                     </motion.div>
+                    
+                    {/* Badge de feedback visuel */}
+                    {showAddedToCart === dish.id && (
+                      <div className="absolute top-2 right-2 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold z-30 animate-bounce">
+                        Ajouté ✓
+                      </div>
+                    )}
                   </motion.div>
                 </motion.div>
               ))}
@@ -394,7 +419,7 @@ const defaultSushiDishes: SushiDish[] = [
     id: 1,
     name: "Rolls saumon braisé",
     description: "Avocat, sauce spicy, billes citronnées",
-    imageUrl: "/menu/création du chef/roll_s avocat sauce spicy.webp",
+    imageUrl: "/menu/creation-chef/roll_s avocat sauce spicy.webp",
     rating: 4.8,
     likes: 215,
     price: "8,80€",
@@ -404,7 +429,7 @@ const defaultSushiDishes: SushiDish[] = [
     id: 2,
     name: "L'italien",
     description: "Tomate, mozza, parmesan, pesto",
-    imageUrl: "/menu/création du chef/L_italien 4.webp",
+    imageUrl: "/menu/creation-chef/L_italien 4.webp",
     rating: 4.9,
     likes: 248,
     price: "11,80€",
@@ -414,7 +439,7 @@ const defaultSushiDishes: SushiDish[] = [
     id: 3,
     name: "California crevette tempura",
     description: "Avocat, enrobé de saumon braisé, oignon frit",
-    imageUrl: "/menu/création du chef/cali tempura avocat enrobe saumon braisé .webp",
+    imageUrl: "/menu/creation-chef/cali tempura avocat enrobe saumon braisé .webp",
     rating: 4.7,
     likes: 192,
     price: "8,90€",
@@ -424,7 +449,7 @@ const defaultSushiDishes: SushiDish[] = [
     id: 4,
     name: "Avocat mayo",
     description: "Enrobé de thon braisé, pousse de cress",
-    imageUrl: "/menu/création du chef/roll_s avocat pousse de cress.webp",
+    imageUrl: "/menu/creation-chef/roll_s avocat pousse de cress.webp",
     rating: 4.7,
     likes: 178,
     price: "8,50€",
@@ -434,7 +459,7 @@ const defaultSushiDishes: SushiDish[] = [
     id: 5,
     name: "California poulet caramélisé",
     description: "Enrobé de mangue, tobiko",
-    imageUrl: "/menu/création du chef/california poulet caramelisé mangue .webp",
+    imageUrl: "/menu/creation-chef/california poulet caramelisé mangue .webp",
     rating: 4.8,
     likes: 206,
     price: "9,80€",
@@ -444,7 +469,7 @@ const defaultSushiDishes: SushiDish[] = [
     id: 6,
     name: "California poulet frit",
     description: "Guacamole, jalapeno, oignon frit",
-    imageUrl: "/menu/création du chef/cali poulet frit guacamole jalap.webp",
+    imageUrl: "/menu/creation-chef/cali poulet frit guacamole jalap.webp",
     rating: 4.8,
     likes: 197,
     price: "9,40€",
@@ -454,7 +479,7 @@ const defaultSushiDishes: SushiDish[] = [
     id: 7,
     name: "Rolls avocat",
     description: "Enrobé de thon, zeste de pêche, tobiko",
-    imageUrl: "/menu/création du chef/rolls avocat enrobé de thon, zeste de kiwi, tobiko.webp",
+    imageUrl: "/menu/creation-chef/rolls avocat enrobé de thon, zeste de kiwi, tobiko.webp",
     rating: 4.9,
     likes: 211,
     price: "10,30€",
@@ -464,7 +489,7 @@ const defaultSushiDishes: SushiDish[] = [
     id: 8,
     name: "Flocon saumon avocat",
     description: "Tobiko, menthe",
-    imageUrl: "/menu/création du chef/flocon saumon avocat tobiko menthe .webp",
+    imageUrl: "/menu/creation-chef/flocon saumon avocat tobiko menthe .webp",
     rating: 4.7,
     likes: 164,
     price: "7,40€",
@@ -484,7 +509,7 @@ const defaultSushiDishes: SushiDish[] = [
     id: 10,
     name: "California saumon",
     description: "Guacamole jalapeno",
-    imageUrl: "/menu/création du chef/saumon guacamole jalap.webp",
+    imageUrl: "/menu/creation-chef/saumon guacamole jalap.webp",
     rating: 4.8,
     likes: 223,
     price: "11,50€",
@@ -494,7 +519,7 @@ const defaultSushiDishes: SushiDish[] = [
     id: 11,
     name: "Roll's avocat truffe",
     description: "Enrobé de saumon braisé, sauce truffe",
-    imageUrl: "/menu/création du chef/roll_s braisé truffe  - Grande - Grande.webp",
+    imageUrl: "/menu/creation-chef/roll_s braisé truffe  - Grande - Grande.webp",
     rating: 4.9,
     likes: 254,
     price: "13,80€",
@@ -502,12 +527,37 @@ const defaultSushiDishes: SushiDish[] = [
   }
 ];
 
-const NosCreations = () => {
+interface NosCreationsProps {
+  creationsData?: any;
+  onAddToCart?: (item: any) => void;
+  showAddedToCart?: string | null;
+  getProductImage?: (itemId: string, categoryName: string) => any;
+}
+
+const NosCreations = ({ creationsData, onAddToCart, showAddedToCart, getProductImage }: NosCreationsProps) => {
+  // Transformer les données du menu en format attendu par le carousel
+  const dishes = creationsData?.items?.map((item: any) => {
+    const image = getProductImage ? getProductImage(item.id, creationsData.category) : { type: 'none' };
+    return {
+      id: item.id,
+      name: item.name,
+      description: item.description,
+      imageUrl: image.type === 'image' ? image.path : '/placeholder.svg',
+      rating: 4.8, // Valeur par défaut
+      likes: Math.floor(Math.random() * 100) + 150, // Valeur aléatoire
+      price: `${item.price}€`,  // Formater le prix avec €
+      category: "Création du Chef",
+      originalPrice: item.price  // Garder le prix original en nombre
+    };
+  }) || defaultSushiDishes.slice(0, 12);
+
   return (
     <SushiCarousel 
-      dishes={defaultSushiDishes.slice(0, 12)} // Limiter à 12 plats pour éviter trop de scroll
+      dishes={dishes}
       autoplay={true}
       cardsPerView={6}
+      onAddToCart={onAddToCart}
+      showAddedToCart={showAddedToCart}
     />
   );
 };

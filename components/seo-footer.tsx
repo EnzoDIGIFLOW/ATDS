@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Youtube } from 'lucide-react'
+import OpeningHours from './opening-hours'
 
 // Villes où la livraison est disponible
 const deliveryCities = [
@@ -167,9 +168,8 @@ export default function SEOFooter() {
                 06 61 38 75 45
               </a>
             </div>
-            <div className="flex items-center space-x-2">
-              <Clock className="w-4 h-4 text-temple-pink" />
-              <span className="text-gray-400">Lun-Dim: 11h30-14h30, 18h30-22h30</span>
+            <div className="w-full md:w-auto">
+              <OpeningHours variant="compact" className="text-gray-400" />
             </div>
           </div>
         </div>

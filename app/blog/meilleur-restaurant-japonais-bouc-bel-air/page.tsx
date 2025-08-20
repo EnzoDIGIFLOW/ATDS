@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { ContentLinks, RelatedArticles } from '@/components/internal-links'
 import Breadcrumb from '@/components/breadcrumb'
 import GoogleMapsEmbed from '@/components/google-maps-embed'
+import ExperienceSection from '@/components/experience-section'
 
 export const metadata: Metadata = {
   title: 'Quel est le meilleur restaurant japonais autour de Bouc-Bel-Air ? | Au Temple du Sushi',
@@ -405,17 +406,15 @@ export default function MeilleurRestaurantJaponaisArticle() {
             </p>
           </div>
 
-          {/* Google Maps */}
-          <div className="my-12">
-            <GoogleMapsEmbed />
-          </div>
-
           {/* Articles recommandés */}
           <div className="my-12">
             <RelatedArticles />
           </div>
         </div>
       </article>
+      
+      {/* Section Vivez l'Expérience */}
+      <ExperienceSection />
     </div>
   )
 }

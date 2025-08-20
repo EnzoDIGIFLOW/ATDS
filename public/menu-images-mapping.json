@@ -108,17 +108,17 @@
     "sushi-saumon-braise-truffe": "sushi nigiri/sushi saumon braisé truffe.webp"
   },
   "creation-du-chef-par-6": {
-    "flocon-saumon-avocat-menthe": "création du chef/flocon saumon avocat tobiko menthe .webp",
-    "avocat-mayo-thon": "création du chef/roll_s avocat pousse de cress.webp",
-    "rolls-saumon-braise": "création du chef/roll_s braisé truffe  - Grande - Grande.webp",
-    "california-crevette-tempura-enrobe": "création du chef/cali tempura avocat enrobe saumon braisé .webp",
-    "california-poulet-frit-guacamole": "création du chef/cali poulet frit guacamole jalap.webp",
-    "california-poulet-caramelise-mangue": "création du chef/california poulet caramelisé mangue .webp",
-    "rolls-avocat-thon": "création du chef/rolls avocat enrobé de thon, zeste de kiwi, tobiko.webp",
-    "california-saumon-guacamole": "création du chef/saumon guacamole jalap.webp",
-    "l-italien": "création du chef/L_italien 4.webp",
-    "california-saumon-braise-truffe": "création du chef/roll_s braisé truffe  - Grande - Grande .webp",
-    "rolls-avocat-truffe": "création du chef/flocon saumon braisé enrobe de truffe .webp"
+    "flocon-saumon-avocat-menthe": "creation-chef/flocon saumon avocat tobiko menthe .webp",
+    "avocat-mayo-thon": "soon",
+    "rolls-saumon-braise": "creation-chef/roll_s braisé truffe  - Grande - Grande.webp",
+    "california-crevette-tempura-enrobe": "creation-chef/cali tempura avocat enrobe saumon braisé .webp",
+    "california-poulet-frit-guacamole": "creation-chef/cali poulet frit guacamole jalap.webp",
+    "california-poulet-caramelise-mangue": "creation-chef/california poulet caramelisé mangue .webp",
+    "rolls-avocat-thon": "creation-chef/rolls avocat enrobé de thon, zeste de kiwi, tobiko.webp",
+    "california-saumon-guacamole": "creation-chef/saumon guacamole jalap.webp",
+    "l-italien": "creation-chef/L_italien 4.webp",
+    "california-saumon-braise-truffe": "soon",
+    "rolls-avocat-truffe": "soon"
   },
   "crispys-frit-par-6": {
     "saumon-cheese-crispy": "crispy/crisoy saumon cheese .webp",
@@ -151,7 +151,7 @@
   "flocon-par-6": {
     "flocon-saumon": "soon",
     "flocon-thon": "flocon/flocon thon .webp",
-    "flocon-saumon-avocat": "création du chef/flocon saumon avocat tobiko menthe .webp",
+    "flocon-saumon-avocat": "creation-chef/flocon saumon avocat tobiko menthe .webp",
     "flocon-saumon-cheese": "soon",
     "flocon-thon-avocat": "soon",
     "flocon-gambas-mayo": "soon"

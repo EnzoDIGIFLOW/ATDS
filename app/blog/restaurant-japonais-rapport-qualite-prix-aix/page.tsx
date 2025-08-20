@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import GoogleMapsEmbed from '@/components/google-maps-embed'
+import ExperienceSection from '@/components/experience-section'
 
 export const metadata: Metadata = {
   title: 'Restaurant japonais bon rapport qualité-prix à Aix-en-Provence | Au Temple du Sushi',
@@ -350,11 +350,11 @@ export default function RestaurantJaponaisRapportQualitePrixAix() {
             </p>
           </div>
 
-          {/* Google Maps */}
-          <div className="my-12">
-            <GoogleMapsEmbed />
-          </div>
         </div>
       </article>
+      
+      {/* Section Vivez l'Expérience */}
+      <ExperienceSection />
+    </>
   )
 }

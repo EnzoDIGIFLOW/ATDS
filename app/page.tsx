@@ -8,8 +8,8 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Package, Truck } from 'lucide-react';
-import { MapPin, Phone, Clock, Star, Instagram, ShoppingCart, User, MenuIcon, X, ChevronDown, Heart, Utensils, Fish, Play, Pause, Volume2, VolumeX, Plus, Minus, UtensilsCrossed, ShoppingBag, Navigation, Send, Mail, Facebook, Youtube, ChevronLeft, ChevronRight, FileText } from 'lucide-react';
+import { Package, Truck, Calendar } from 'lucide-react';
+import { MapPin, Phone, Clock, Star, Instagram, ShoppingCart, User, MenuIcon, X, ChevronDown, Heart, Utensils, Fish, Play, Pause, Volume2, VolumeX, Plus, Minus, UtensilsCrossed, ShoppingBag, Navigation, Send, Mail, Facebook, Youtube, ChevronLeft, ChevronRight, FileText, Camera } from 'lucide-react';
 import Image from "next/image";
 import Link from "next/link";
 import { TypingAnimation } from "@/components/magicui/typing-animation";
@@ -26,6 +26,11 @@ import { BlurFade } from "@/components/magicui/blur-fade";
 import { AboutImages } from "@/components/about-images";
 import InstagramFeed from "@/components/instagram-feed";
 import GoogleReviews from "@/components/google-reviews";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { DELIVERY_ZONES, RESTAURANT_CONFIG } from "@/config/delivery";
+import menuImageMapping from "../public/menu-images-mapping.json";
+import OpeningHours from "@/components/opening-hours";
+import OpeningStatusBadge from "@/components/opening-status-badge";
 
 const NosCreations = dynamic(
   () => import('../components/our-creation-section'),
@@ -87,6 +92,65 @@ export default function Home() {
   const [isVideoPlaying, setIsVideoPlaying] = useState(true);
   const [isVideoMuted, setIsVideoMuted] = useState(true);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
+  const [selectedModalCategory, setSelectedModalCategory] = useState<string>("all");
+  const [showAddedToCart, setShowAddedToCart] = useState<string | null>(null);
+
+  // Fonction helper pour obtenir les images des produits
+  const getProductImage = (itemId: string, categoryName: string) => {
+    try {
+      // Normaliser le nom de la catégorie pour correspondre aux clés du JSON
+      const categoryMappings: { [key: string]: string } = {
+        "Formules du Midi": "formules-du-midi",
+        "Plateaux": "plateaux",
+        "Plats chauds": "plats-chauds",
+        "Plats Chauds": "plats-chauds",
+        "Makis par 6": "makis-par-6",
+        "California par 6": "california-par-6",
+        "Sashimi par 6": "sashimi-par-6",
+        "Sushi à l'unité": "sushi-a-lunite",
+        "Temaki à l'unité": "temaki-a-lunite",
+        "Chirashi": "chirashi",
+        "Roll's par 6": "rolls-par-6",
+        "Spicy Roll's par 6": "spicy-rolls-par-6",
+        "Pin's Roll's par 6": "pins-rolls-par-6",
+        "Fresh roll's par 6": "fresh-rolls-par-6",
+        "Poke Bowl sur lit de riz": "poke-bowl",
+        "Création du Chef par 6": "creation-du-chef-par-6",
+        "Crispys (frit) par 6": "crispys-frit-par-6",
+        "Tartare": "tartare",
+        "Accompagnements": "accompagnements",
+        "Nos Accompagnements": "accompagnements",
+        "Desserts": "desserts",
+        "Boissons": "boissons"
+      };
+      
+      const categoryKey = categoryMappings[categoryName] || categoryName.toLowerCase().replace(/\s+/g, '-');
+      const imagePath = (menuImageMapping as any)[categoryKey]?.[itemId];
+      
+      // Pour les plats chauds et autres catégories qui devraient avoir des images
+      const categoriesNeedingImages = [
+        "plats-chauds", 
+        "poke-bowl", 
+        "plateaux", 
+        "makis-par-6", 
+        "california-par-6", 
+        "sushi-a-lunite",
+        "creation-du-chef-par-6",
+        "crispys-frit-par-6",
+        "tartare",
+        "accompagnements"
+      ];
+      const shouldHaveImage = categoriesNeedingImages.includes(categoryKey);
+      
+      if (imagePath === "soon") return { type: 'soon' as const };
+      if (imagePath && imagePath !== null) return { type: 'image' as const, path: `/menu/${imagePath}` };
+      if (shouldHaveImage) return { type: 'soon' as const }; // Si le produit devrait avoir une image mais n'en a pas
+      return { type: 'none' as const };
+    } catch (error) {
+      console.warn('Erreur chargement mapping images:', error);
+      return { type: 'none' as const };
+    }
+  };
 
   interface CartItem {
     id: string | number;
@@ -1857,6 +1921,10 @@ export default function Home() {
     } else {
       setCart([...cart, { ...item, quantity: 1 }]);
     }
+    
+    // Afficher le feedback visuel
+    setShowAddedToCart(item.id);
+    setTimeout(() => setShowAddedToCart(null), 2000);
   }
   const removeFromCart = (itemId: any) => {
     setCart(cart.filter((item) => item.id !== itemId));
@@ -1904,7 +1972,7 @@ export default function Home() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-temple-pink"></div>
       </div>
-    )
+    );
   }
 
   return (
@@ -1959,6 +2027,8 @@ export default function Home() {
               </Link>
             </div>
             <div className="flex items-center space-x-4">
+              <OpeningStatusBadge />
+              <div className="hidden md:block h-6 w-px bg-gray-300" />
               <LanguageSwitcher className="hidden md:block" />
               <Button variant="ghost" size="icon" className="md:hidden" onClick={() => setIsMenuOpen(!isMenuOpen)}>
                 {isMenuOpen ? <X className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
@@ -2030,12 +2100,15 @@ export default function Home() {
             >
               <h2 className="text-5xl font-bold text-gray-900 mb-6">{t.about.title}</h2>
               <p className="text-lg text-gray-600 mb-6 font-medium leading-relaxed">
-                {t.about.description}
+                {language === 'fr' 
+                  ? "Au Temple du Sushi est un restaurant japonais dédié à l'art culinaire du Japon. Nos chefs mettent tout leur savoir-faire et leur créativité en œuvre pour vous offrir une expérience gastronomique authentique. Situé au cœur de Bouc-Bel-Air, nous choisissons quotidiennement les meilleurs produits pour garantir fraîcheur et qualité. Chaque sushi est préparé avec soin dans le respect des traditions japonaises."
+                  : t.about.description
+                }
               </p>
               <div className="flex items-center space-x-6">
                 <div className="text-center">
                   <div className="text-3xl font-bold text-temple-pink">
-                    <NumberTicker className="text-temple-pink" value={10} />+ </div>
+                    <NumberTicker className="text-temple-pink" value={5} />+ </div>
                   <div className="text-sm text-gray-600 font-medium">{t.stats.yearsExperience}</div>
                 </div>
                 <div className="text-center">
@@ -2060,6 +2133,7 @@ export default function Home() {
           </div>
         </div>
       </section>
+
 
       {/* Section Concept Libre-Service */}
       <section id="libre-service" className="py-16 md:py-20 bg-gradient-to-b from-white to-gray-50 overflow-hidden">
@@ -2112,8 +2186,8 @@ export default function Home() {
                     <span className="text-2xl mt-1">🥢</span>
                     <p className="text-gray-700">
                       {language === 'fr' 
-                        ? "Dégustez sur place, à emporter ou en livraison"
-                        : "Enjoy on-site, takeaway or delivery"
+                        ? "À emporter pour déguster où vous le souhaitez"
+                        : "Takeaway to enjoy wherever you want"
                       }
                     </p>
                   </div>
@@ -2141,32 +2215,24 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Colonne image */}
+            {/* Colonne vidéo */}
             <div className="order-1 lg:order-2 animate-fade-in-right">
-              <div className="relative aspect-[4/3] lg:aspect-[16/9] rounded-xl overflow-hidden shadow-2xl">
-                {/* Placeholder image */}
-                <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
-                  <div className="text-center p-8">
-                    <ShoppingCart className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-                    <p className="text-gray-500 font-medium text-lg">
-                      {language === 'fr' ? 'Photo vitrine à venir' : 'Showcase photo coming soon'}
-                    </p>
-                    <p className="text-gray-400 text-sm mt-2">
-                      {language === 'fr' ? 'Vitrine réfrigérée Au Temple du Sushi' : 'Au Temple du Sushi refrigerated display'}
-                    </p>
-                  </div>
-                </div>
-                {/* Quand l'image sera disponible, remplacer par :
-                <Image
-                  src="/vitrine-libre-service.jpg"
-                  alt={language === 'fr' ? "Vitrine réfrigérée Au Temple du Sushi - Libre service" : "Au Temple du Sushi refrigerated display - Self service"}
-                  fill
-                  className="object-cover"
-                  priority
-                />
-                */}
-                {/* Overlay décoratif */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent pointer-events-none" />
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl aspect-[9/16] lg:aspect-[3/4] max-h-[600px]">
+                <video 
+                  className="w-full h-full object-cover rounded-2xl" 
+                  autoPlay 
+                  loop 
+                  muted 
+                  playsInline
+                  controls={false}
+                >
+                  <source src="/poke%20bowl%20libre%20service%20.mov" type="video/quicktime" />
+                  <source src="/poke%20bowl%20libre%20service%20.mov" type="video/mp4" />
+                  {language === 'fr' 
+                    ? "Votre navigateur ne supporte pas la lecture de vidéos."
+                    : "Your browser does not support video playback."
+                  }
+                </video>
               </div>
               {/* Badge flottant */}
               <div className="mt-6 flex items-center justify-center lg:justify-start space-x-4">
@@ -2272,39 +2338,78 @@ export default function Home() {
                       </div>
                       <CardContent className="p-0">
                         <div className="max-h-96 overflow-y-auto">
-                          {category.items.map((item, itemIndex) => (
-                            <div
-                              key={itemIndex}
-                              className="group/item p-4 border-b border-gray-100 last:border-b-0 hover:bg-temple-pink/5 transition-all duration-300"
-                            >
-                                  <div className="flex items-start justify-between mb-2">
-                                    <div className="flex-1 min-w-0">
-                                      <h4 className="font-semibold text-gray-900 group-hover/item:text-temple-pink transition-colors duration-300 truncate pr-2">
-                                        {item.name}
-                                      </h4>
-                                      <p className="text-sm text-gray-600 leading-relaxed line-clamp-2">
-                                        {item.description}
-                                      </p>
+                          {category.items.map((item, itemIndex) => {
+                            const productImage = getProductImage(item.id || item.name.toLowerCase().replace(/\s+/g, '-'), category.category);
+                            
+                            return (
+                              <div
+                                key={itemIndex}
+                                className={`group/item p-4 border-b border-gray-100 last:border-b-0 hover:bg-temple-pink/5 transition-all duration-300 relative ${
+                                  showAddedToCart === item.id ? 'bg-green-50 border-l-4 border-l-green-500' : ''
+                                }`}
+                              >
+                                {/* Badge de feedback visuel */}
+                                {showAddedToCart === item.id && (
+                                  <div className="absolute -top-2 -right-2 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold z-20 animate-bounce">
+                                    Ajouté ✓
+                                  </div>
+                                )}
+                                <div className="flex items-start gap-3">
+                                  {/* Image conditionnelle */}
+                                  {productImage.type === 'image' && (
+                                    <div className="w-12 h-12 rounded-full overflow-hidden flex-shrink-0">
+                                      <Image
+                                        src={productImage.path}
+                                        alt={item.name}
+                                        width={48}
+                                        height={48}
+                                        className="w-full h-full object-cover"
+                                      />
                                     </div>
-                                    <div className="flex items-center space-x-2 flex-shrink-0">
-                                      <Badge
-                                        variant="outline"
-                                        className="bg-temple-pink/10 text-temple-pink border-temple-pink/30 font-bold text-sm px-2 py-1"
-                                      >
-                                        {item.price}€
-                                      </Badge>
-                                      <Button
-                                        size="sm"
-                                        className="bg-gradient-to-r from-temple-pink to-temple-pink/90 hover:from-temple-pink/90 hover:to-temple-pink text-white shadow-lg hover:shadow-xl transition-all duration-300 group-hover/item:scale-110"
-                                        onClick={() => addToCart(item)}
-                                      >
-                                        <Plus className="w-4 h-4" />
-                                      </Button>
+                                  )}
+                                  
+                                  {productImage.type === 'soon' && (
+                                    <div className="w-12 h-12 rounded-full bg-gray-100 flex flex-col items-center justify-center flex-shrink-0">
+                                      <span className="text-lg">📸</span>
+                                      <span className="text-[10px] text-gray-500">bientôt</span>
+                                    </div>
+                                  )}
+                                  
+                                  {/* Contenu principal */}
+                                  <div className="flex-1">
+                                    <div className="flex items-start justify-between">
+                                      <div className="flex-1 min-w-0">
+                                        <h4 className="font-semibold text-gray-900 group-hover/item:text-temple-pink transition-colors duration-300 pr-2">
+                                          {item.name}
+                                        </h4>
+                                        <div className="flex items-center gap-2 mt-1">
+                                          <Badge
+                                            variant="outline"
+                                            className="bg-temple-pink/10 text-temple-pink border-temple-pink/30 font-bold text-sm px-2 py-1"
+                                          >
+                                            {item.price}€
+                                          </Badge>
+                                        </div>
+                                        <p className="text-sm text-gray-600 leading-relaxed line-clamp-2 mt-2" title={item.description}>
+                                          {item.description}
+                                        </p>
+                                      </div>
+                                      <div className="flex-shrink-0 ml-2">
+                                        <Button
+                                          size="sm"
+                                          className="bg-gradient-to-r from-temple-pink to-temple-pink/90 hover:from-temple-pink/90 hover:to-temple-pink text-white shadow-lg hover:shadow-xl transition-all duration-300 group-hover/item:scale-110"
+                                          onClick={() => addToCart(item)}
+                                        >
+                                          <Plus className="w-4 h-4" />
+                                        </Button>
+                                      </div>
                                     </div>
                                   </div>
-                                  <div className="h-0.5 bg-gradient-to-r from-temple-pink to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 mt-3"></div>
                                 </div>
-                              ))}
+                                <div className="h-0.5 bg-gradient-to-r from-temple-pink to-transparent opacity-0 group-hover/item:opacity-100 transition-opacity duration-300 mt-3"></div>
+                              </div>
+                            );
+                          })}
                             </div>
                           </CardContent>
                           <div className="p-4 bg-gray-50/50 border-t border-gray-100">
@@ -2356,26 +2461,88 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Section unifiée : Sur place, Livraison et Horaires */}
+      <section className="py-16 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-10">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              {language === 'fr' 
+                ? "L'art du sushi à votre service" 
+                : 'Your sushi and Japanese dishes dine-in, takeaway or delivery :)'}
+            </h2>
+          </div>
           
-          {/* CTA Section */}
-          <div className="mt-12 flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-temple-pink to-temple-pink/90 hover:from-temple-pink/90 hover:to-temple-pink text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-8 py-4 text-lg font-semibold flex items-center gap-3 group"
-              onClick={() => window.open('/menu.pdf', '_blank')}
-            >
-              <FileText className="w-5 h-5 group-hover:scale-110 transition-transform" />
-              Voir la carte
-            </Button>
+          <div className="grid lg:grid-cols-2 gap-8 items-start">
+            {/* Colonne gauche : Horaires */}
+            <div className="h-full">
+              <OpeningHours variant="card" showStatus={true} className="h-full" />
+            </div>
             
-            <Button
-              size="lg"
-              className="bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 rounded-full px-8 py-4 text-lg font-semibold flex items-center gap-3 group"
-              onClick={() => window.location.href = 'tel:+33442220896'}
-            >
-              <Phone className="w-5 h-5 group-hover:scale-110 transition-transform animate-pulse" />
-              Réserver par téléphone
-            </Button>
+            {/* Colonne droite : Carte sur place + Zones de livraison */}
+            <div className="space-y-6">
+              {/* Carte exclusive sur place */}
+              <div className="bg-white rounded-2xl shadow-lg p-6">
+                <h3 className="text-xl font-bold text-gray-900 mb-3 flex items-center">
+                  <Utensils className="w-5 h-5 mr-2 text-temple-pink" />
+                  {language === 'fr' ? 'Carte exclusive sur place' : 'Exclusive dine-in menu'}
+                </h3>
+                <p className="text-sm text-gray-600 mb-4">
+                  {language === 'fr' 
+                    ? "Bœuf Wagyu A5, ramens artisanaux et autres créations uniques disponibles uniquement sur place."
+                    : "A5 Wagyu beef, artisanal ramen and other unique creations available only for dine-in."
+                  }
+                </p>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <a 
+                    href="/CARTE-MENU-2025.pdf" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center px-4 py-2 bg-temple-pink hover:bg-temple-pink/90 text-black font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 text-sm"
+                  >
+                    <FileText className="mr-2 h-4 w-4" />
+                    {language === 'fr' ? 'Voir la carte sur place' : 'View dine-in menu'}
+                  </a>
+                  <a 
+                    href="tel:+33661387545" 
+                    className="inline-flex items-center justify-center px-4 py-2 bg-white hover:bg-gray-50 text-temple-pink border-2 border-temple-pink font-semibold rounded-lg transition-all duration-300 transform hover:scale-105 text-sm"
+                  >
+                    <Phone className="mr-2 h-4 w-4" />
+                    {language === 'fr' ? 'Réserver' : 'Book'}
+                  </a>
+                </div>
+              </div>
+              
+              {/* Zones de livraison */}
+              <div className="bg-white rounded-2xl shadow-lg p-6">
+                <div className="flex items-center gap-2 mb-4">
+                  <Truck className="w-5 h-5 text-temple-pink" />
+                  <h3 className="font-bold text-gray-900 text-xl">
+                    {language === 'fr' ? 'Livraison à domicile' : 'Home delivery'}
+                  </h3>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-3 mb-4">
+                  {DELIVERY_ZONES.map((zone) => (
+                    <div key={zone.slug} className="flex flex-col">
+                      <span className="text-gray-800 font-medium text-sm">{zone.label}</span>
+                      <span className="text-xs text-gray-500">Min. {zone.minOrder}€</span>
+                    </div>
+                  ))}
+                </div>
+                
+                <div className="pt-4 border-t border-gray-100">
+                  <p className="text-xs text-gray-600 italic">
+                    {language === 'fr' 
+                      ? "Pas encore dans votre zone ? Nous étendons notre service régulièrement 😉"
+                      : "Not in your area yet? We're expanding regularly 😉"
+                    }
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -2383,7 +2550,7 @@ export default function Home() {
       {/* Services Section */}
       <section
         ref={servicesRef}
-        className={`py-20 bg-white transition-all duration-1000 ease-in-out ${servicesInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+        className={`py-20 bg-gray-50 transition-all duration-1000 ease-in-out ${servicesInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -2441,7 +2608,12 @@ export default function Home() {
         className={`py-20 bg-gray-50 transition-all duration-1000 ease-in-out ${creationsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
           }`}
       >
-        <NosCreations />
+        <NosCreations 
+          creationsData={menuAEmporter.find(cat => cat.category === "Création du Chef par 6")}
+          onAddToCart={addToCart}
+          showAddedToCart={showAddedToCart}
+          getProductImage={getProductImage}
+        />
       </section>
 
       {/* Reviews Section */}
@@ -2455,8 +2627,15 @@ export default function Home() {
             className={`text-center mb-16 transition-all duration-800 ease-in-out delay-200 ${reviewsInView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
           >
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">Ce que disent nos clients</h2>
-            <GoogleReviews />
+            <div className="google-reviews-wrapper">
+              <GoogleReviews />
+            </div>
+            <style jsx>{`
+              .google-reviews-wrapper :global(.elfsight-app-title),
+              .google-reviews-wrapper :global([class*="elfsight"][class*="title"]) {
+                display: none !important;
+              }
+            `}</style>
           </div>
         </div>
       </section>
@@ -2680,11 +2859,11 @@ export default function Home() {
             <Link href="/sushi-aix-en-provence" className="group">
               <Card className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                 <CardContent className="p-6">
-                  <Truck className="w-8 h-8 text-temple-pink mb-3" />
+                  <MapPin className="w-8 h-8 text-temple-pink mb-3" />
                   <h3 className="font-bold text-lg mb-2 group-hover:text-temple-pink transition-colors">
-                    Livraison Aix-en-Provence
+                    Restaurant japonais proche d'Aix-en-Provence
                   </h3>
-                  <p className="text-gray-600 text-sm">Sushis livrés en 45 minutes</p>
+                  <p className="text-gray-600 text-sm">À 15 minutes d'Aix centre</p>
                 </CardContent>
               </Card>
             </Link>
@@ -2704,11 +2883,11 @@ export default function Home() {
             <Link href="/sushi-gardanne" className="group">
               <Card className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                 <CardContent className="p-6">
-                  <Clock className="w-8 h-8 text-temple-pink mb-3" />
+                  <Truck className="w-8 h-8 text-temple-pink mb-3" />
                   <h3 className="font-bold text-lg mb-2 group-hover:text-temple-pink transition-colors">
                     Livraison Gardanne
                   </h3>
-                  <p className="text-gray-600 text-sm">Service rapide 30 minutes</p>
+                  <p className="text-gray-600 text-sm">Livraison à partir de 50€</p>
                 </CardContent>
               </Card>
             </Link>
@@ -2716,11 +2895,11 @@ export default function Home() {
             <Link href="/restaurant-japonais-les-milles" className="group">
               <Card className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                 <CardContent className="p-6">
-                  <Utensils className="w-8 h-8 text-temple-pink mb-3" />
+                  <MapPin className="w-8 h-8 text-temple-pink mb-3" />
                   <h3 className="font-bold text-lg mb-2 group-hover:text-temple-pink transition-colors">
-                    Restaurant Les Milles
+                    Restaurant japonais proche des Milles
                   </h3>
-                  <p className="text-gray-600 text-sm">Zone commerciale Les Milles</p>
+                  <p className="text-gray-600 text-sm">À 10 minutes de la zone commerciale</p>
                 </CardContent>
               </Card>
             </Link>
@@ -2728,11 +2907,11 @@ export default function Home() {
             <Link href="/sushi-cabries" className="group">
               <Card className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                 <CardContent className="p-6">
-                  <Heart className="w-8 h-8 text-temple-pink mb-3" />
+                  <Truck className="w-8 h-8 text-temple-pink mb-3" />
                   <h3 className="font-bold text-lg mb-2 group-hover:text-temple-pink transition-colors">
-                    Sushi Cabriès
+                    Livraison Cabriès
                   </h3>
-                  <p className="text-gray-600 text-sm">Village provençal authentique</p>
+                  <p className="text-gray-600 text-sm">Livraison à partir de 25€</p>
                 </CardContent>
               </Card>
             </Link>
@@ -2762,94 +2941,135 @@ export default function Home() {
             </Link>
           </div>
 
-          {/* Section zones de livraison */}
-          <div className="mt-12 bg-white rounded-lg shadow-md p-8">
-            <h3 className="text-2xl font-bold mb-6">Zones de livraison de sushis</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-              <div>
-                <h4 className="font-semibold text-temple-pink mb-2">Zone Express (30 min)</h4>
-                <ul className="space-y-1 text-gray-600">
-                  <li>• Bouc-Bel-Air centre</li>
-                  <li>• Gardanne</li>
-                  <li>• Biver</li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-semibold text-temple-pink mb-2">Zone Rapide (45 min)</h4>
-                <ul className="space-y-1 text-gray-600">
-                  <li>• Aix-en-Provence</li>
-                  <li>• Plan de Campagne</li>
-                  <li>• Cabriès</li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-semibold text-temple-pink mb-2">Zone Standard (60 min)</h4>
-                <ul className="space-y-1 text-gray-600">
-                  <li>• Les Milles</li>
-                  <li>• Luynes</li>
-                  <li>• La Duranne</li>
-                </ul>
-              </div>
-              <div>
-                <h4 className="font-semibold text-temple-pink mb-2">Autres zones</h4>
-                <ul className="space-y-1 text-gray-600">
-                  <li>• Simiane-Collongue</li>
-                  <li>• Calas</li>
-                  <li>• Meyreuil</li>
-                </ul>
-              </div>
-            </div>
-            <p className="text-center mt-6 text-gray-600">
-              <strong>Minimum de commande : 25€</strong> | 
-              <Link href="/restaurant-japonais-bouc-bel-air" className="text-temple-pink hover:underline ml-2">
-                En savoir plus →
-              </Link>
-            </p>
-          </div>
         </div>
       </section>
 
       {/* SEO Footer avec maillage interne */}
       <SEOFooter />
 
-      {/* Modal de Commande */}
-      <Dialog open={isOrderModalOpen} onOpenChange={setIsOrderModalOpen}>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-bold text-temple-pink">Votre Commande</DialogTitle>
+      {/* Modal de Commande Amélioré */}
+      <Dialog open={isOrderModalOpen} onOpenChange={(open) => {
+        setIsOrderModalOpen(open);
+        if (open) setSelectedModalCategory("all");
+      }}>
+        <DialogContent className="max-w-7xl max-h-[90vh] p-0 overflow-hidden">
+          <DialogHeader className="p-6 pb-0">
+            <DialogTitle className="text-2xl font-bold text-temple-pink">Faites votre liste et réservez par téléphone</DialogTitle>
+            <p className="text-sm text-gray-600 mt-2">Créez votre liste de favoris puis contactez-nous pour commander rapidement !</p>
           </DialogHeader>
-          <div className="grid lg:grid-cols-2 gap-8">
-            {/* Liste des plats */}
-            <div>
-              <h3 className="text-xl font-bold mb-4">Nos Plats</h3>
-              <div className="space-y-4 max-h-96 overflow-y-auto">
-                {[...menuSurPlace, ...menuAEmporter].flatMap((category) =>
-                  category.items.map((item) => (
-                    <Card key={item.id} className="hover:shadow-md transition-shadow">
-                      <CardContent className="p-4">
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <h4 className="font-semibold">{item.name}</h4>
-                            <p className="text-sm text-gray-600">{item.description}</p>
-                            <p className="font-bold text-temple-pink">{item.price}€</p>
-                          </div>
-                          <Button
-                            size="sm"
-                            className="bg-temple-pink hover:bg-temple-pink/90"
-                            onClick={() => addToCart(item)}
-                          >
-                            <Plus className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))
-                )}
+          
+          <div className="flex h-[calc(90vh-120px)]">
+            {/* Colonne de navigation des catégories */}
+            <div className="w-64 bg-gray-50 border-r overflow-y-auto p-4">
+              <h3 className="font-semibold text-sm text-gray-700 mb-3">CATÉGORIES</h3>
+              <div className="space-y-1">
+                <button
+                  onClick={() => setSelectedModalCategory("all")}
+                  className={`w-full text-left px-3 py-2 rounded-lg transition-all ${
+                    selectedModalCategory === "all" 
+                      ? "bg-temple-pink text-white font-semibold" 
+                      : "hover:bg-gray-200 text-gray-700"
+                  }`}
+                >
+                  Tous les produits
+                </button>
+                {menuAEmporter.map((category) => (
+                  <button
+                    key={category.category}
+                    onClick={() => setSelectedModalCategory(category.category)}
+                    className={`w-full text-left px-3 py-2 rounded-lg transition-all ${
+                      selectedModalCategory === category.category 
+                        ? "bg-temple-pink text-white font-semibold" 
+                        : "hover:bg-gray-200 text-gray-700"
+                    }`}
+                  >
+                    {category.category}
+                  </button>
+                ))}
               </div>
             </div>
-            {/* Panier et formulaire */}
-            <div>
-              <h3 className="text-xl font-bold mb-4">Votre Panier</h3>
+            
+            {/* Zone principale avec menu et panier */}
+            <div className="flex-1 grid lg:grid-cols-5 gap-0">
+              {/* Liste des plats (3 colonnes) */}
+              <div className="lg:col-span-3 p-6 overflow-y-auto">
+                <h3 className="text-xl font-bold mb-4">Notre Menu À Emporter</h3>
+                <div className="space-y-6">
+                  {menuAEmporter
+                    .filter(category => selectedModalCategory === "all" || category.category === selectedModalCategory)
+                    .map((category) => (
+                  <div key={category.category} className="space-y-2">
+                    <h4 className="font-semibold text-lg text-temple-pink sticky top-0 bg-white py-2 z-10">
+                      {category.category}
+                    </h4>
+                    <div className="space-y-2">
+                      {category.items.map((item) => {
+                        const productImage = getProductImage(item.id || item.name.toLowerCase().replace(/\s+/g, '-'), category.category);
+                        
+                        return (
+                          <Card key={item.id} className={`hover:shadow-md transition-all relative ${
+                            showAddedToCart === item.id ? 'ring-2 ring-green-500 bg-green-50' : ''
+                          }`}>
+                            {/* Badge de feedback visuel */}
+                            {showAddedToCart === item.id && (
+                              <div className="absolute -top-2 -right-2 bg-green-500 text-white px-3 py-1 rounded-full text-xs font-semibold z-20 animate-bounce">
+                                Ajouté ✓
+                              </div>
+                            )}
+                            <CardContent className="p-4">
+                              <div className="flex justify-between items-center gap-3">
+                                {/* Image du produit */}
+                                <div className="flex-shrink-0">
+                                  {productImage.type === 'image' ? (
+                                    <div className="w-16 h-16 rounded-lg overflow-hidden">
+                                      <Image
+                                        src={productImage.path}
+                                        alt={item.name}
+                                        width={64}
+                                        height={64}
+                                        className="w-full h-full object-cover"
+                                      />
+                                    </div>
+                                  ) : productImage.type === 'soon' ? (
+                                    <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-temple-pink/10 to-temple-pink/20 flex items-center justify-center">
+                                      <Camera className="w-6 h-6 text-temple-pink/50" />
+                                    </div>
+                                  ) : (
+                                    <div className="w-16 h-16 rounded-lg bg-gray-100 flex items-center justify-center">
+                                      <Fish className="w-6 h-6 text-gray-400" />
+                                    </div>
+                                  )}
+                                </div>
+                                
+                                {/* Détails du produit */}
+                                <div className="flex-1">
+                                  <h5 className="font-semibold">{item.name}</h5>
+                                  <p className="text-sm text-gray-600 line-clamp-2">{item.description}</p>
+                                  <p className="font-bold text-temple-pink mt-1">{item.price}€</p>
+                                </div>
+                                
+                                {/* Bouton d'ajout */}
+                                <Button
+                                  size="sm"
+                                  className="bg-temple-pink hover:bg-temple-pink/90 flex-shrink-0"
+                                  onClick={() => addToCart(item)}
+                                >
+                                  <Plus className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+                </div>
+              </div>
+              
+              {/* Panier (2 colonnes) */}
+              <div className="lg:col-span-2 bg-gray-50 p-6 border-l overflow-y-auto">
+                <h3 className="text-xl font-bold mb-4">Votre Panier</h3>
               {cart.length === 0 ? (
                 <p className="text-gray-500 mb-6">Votre panier est vide</p>
               ) : (
@@ -2884,16 +3104,22 @@ export default function Home() {
                   </div>
                 </div>
               )}
+              
+              {/* CTA Principal pour passer commande */}
               {cart.length > 0 && (
-                <form onSubmit={handleOrderSubmit} className="space-y-4">
-                  <Button asChild className="w-full bg-temple-pink text-black hover:bg-temple-pink/90 font-semibold">
-                    <Link href="tel:+33661387545">
-                      <Phone className="w-5 h-5 mr-2" />
-                      Contactez le restaurant
-                    </Link>
-                  </Button>
-                </form>
+                <div className="mt-6 p-4 bg-gradient-to-r from-temple-pink to-pink-400 rounded-lg text-white text-center">
+                  <p className="font-bold text-lg mb-2">Appelez pour réserver votre commande !</p>
+                  <a 
+                    href="tel:0442586888" 
+                    className="inline-flex items-center justify-center gap-2 bg-white text-temple-pink px-6 py-3 rounded-full font-bold hover:bg-gray-100 transition-all transform hover:scale-105"
+                  >
+                    <Phone className="w-5 h-5" />
+                    04 42 58 68 88
+                  </a>
+                  <p className="text-sm mt-2 text-white/90">Service rapide</p>
+                </div>
               )}
+              </div>
             </div>
           </div>
         </DialogContent>
@@ -2916,5 +3142,5 @@ export default function Home() {
         </Button>
       </div>
     </div>
-  )
+  );
 }

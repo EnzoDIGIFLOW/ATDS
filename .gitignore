@@ -1,38 +1,95 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+.yarn/install-state.gz
+pnpm-lock.yaml
 
-# dependencies
-/node_modules
+# Testing
+coverage/
+.nyc_output
 
-# next.js
-/.next/
-/out/
+# Next.js
+.next/
+out/
+build/
+dist/
 
-# production
-/build
+# Production
+*.local
 
-# debug
+# Debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+pnpm-debug.log*
 .pnpm-debug.log*
 
-# env files
-.env*
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.production
 
-# vercel
-.vercel
+# IDE - VSCode
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
-# typescript
-*.tsbuildinfo
-next-env.d.tsnode_modules
-.next
+# OS
 .DS_Store
+Thumbs.db
 __MACOSX
+
+# Typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# PWA files
+**/public/sw.js
+**/public/workbox-*.js
+**/public/worker-*.js
+**/public/sw.js.map
+**/public/workbox-*.js.map
+**/public/worker-*.js.map
+
+# Misc
+*.log
+.cache
+.temp
+.tmp
+
+# Backup files
+*.backup*
+*.bak
+public/backup/
+
+# Trash folder
+.trash/
+
+# Archives
+*.zip
+*.tgz
+*.tar.gz
+*.rar
+
+# Scripts data
 scripts/videos-extracted/
 scripts/videos-sources/
 scripts/images-source/
-public/backup/
-*.zip
-*.tgz
-*.log
-*.tsbuildinfo
+
+# Vercel
+.vercel
+
+# Turbo
+.turbo
+
+# Netlify
+.netlify
