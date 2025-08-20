@@ -82,7 +82,8 @@ const faqSchema = {
 
 export default function RestaurantJaponaisRapportQualitePrixAix() {
   return (
-    <article className="max-w-4xl mx-auto px-4 py-8">
+    <>
+      <article className="max-w-4xl mx-auto px-4 py-8">
       <script 
         type="application/ld+json" 
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
